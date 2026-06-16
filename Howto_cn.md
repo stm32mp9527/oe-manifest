@@ -81,54 +81,6 @@ STM32MP_SOURCE_SELECTION:pn-tf-a-stm32mp = "github"
 STM32MP_SOURCE_SELECTION:pn-u-boot-stm32mp = "github"
 ```
 
-
-
-# 修正 BSP 源码分支和 SRCREV
-
-默认 recipe 中 `ARCHIVER_ST_BRANCH` 指向 `shuhe-dev`，需改为包含 `-test` 设备树的 `shuhe-dev-lwg` 分支，并同步 SRCREV。以下 4 个文件各改两行：
-
-```bash
-cd layers/meta-st/meta-st-stm32mp
-```
-
-**linux-stm32mp** (`recipes-kernel/linux/linux-stm32mp_6.6.bb`)：
-
-```diff
--ARCHIVER_ST_BRANCH = "shuhe-dev"
-+ARCHIVER_ST_BRANCH = "shuhe-dev-lwg"
--SRCREV:class-devupstream = "4db67907..."
-+SRCREV:class-devupstream = "7c121de9203f94c6f2bc5f5b6b7bf75be7644114"
-```
-
-**optee-os-stm32mp** (`recipes-security/optee/optee-os-stm32mp_4.0.0.bb`)：
-
-```diff
--ARCHIVER_ST_BRANCH="shuhe-dev"
-+ARCHIVER_ST_BRANCH="shuhe-dev-lwg"
--SRCREV:class-devupstream = "9905e793..."
-+SRCREV:class-devupstream = "b6f4259032a24b47dc4ed7e7da26b83d61fb0483"
-```
-
-**tf-a-stm32mp** (`recipes-bsp/trusted-firmware-a/tf-a-stm32mp-common.inc`)：
-
-```diff
--ARCHIVER_ST_BRANCH="shuhe-dev"
-+ARCHIVER_ST_BRANCH="shuhe-dev-lwg"
--SRCREV:class-devupstream = "2945fb93..."
-+SRCREV:class-devupstream = "b4de06d89203d6a4c0d5bac3964b90ffb560efa5"
-```
-
-**u-boot-stm32mp** (`recipes-bsp/u-boot/u-boot-stm32mp-common_2023.10.inc`)：
-
-```diff
--ARCHIVER_ST_BRANCH="shuhe-dev"
-+ARCHIVER_ST_BRANCH="shuhe-dev-lwg"
--SRCREV:class-devupstream = "1d420693..."
-+SRCREV:class-devupstream = "3d9acd41ba9e56b04350a0f0c0b0a78c1a08386c"
-```
-
-> 原因：`stm32mp13-disco-test` 机器配置文件依赖 `stm32mp135f-test.dts` 等 `-test` 专用设备树文件，这些文件仅存在于 `shuhe-dev-lwg` 分支。SRCREV 需与分支实际 HEAD 一致，否则 `do_fetch` 报 "Unable to find revision"。
-
 # 编译
 
 ```bash
