@@ -22,18 +22,7 @@ source layers/meta-st/scripts/envsetup.sh
 - DISTRO → openstlinux-weston
 - MACHINE → stm32mp13-disco-test
 
-# 修正 bblayers.conf
 
-```bash
-vi build-openstlinuxweston-stm32mp13-disco-test/conf/bblayers.conf
-```
-
-将底部硬编码路径改为：
-
-```bitbake
-BBLAYERS =+ "${OEROOT}/layers/meta-openembedded/meta-oe"
-BBLAYERS =+ "${OEROOT}/layers/meta-openembedded/meta-python"
-```
 
 # 配置 local.conf
 
@@ -60,12 +49,6 @@ ACCEPT_EULA_stm32mp13-disco-test = "1"
 # =========================================================================
 DL_DIR = "/home/lwg/work/shuhe-package/distribution/downloads"
 
-# =========================================================================
-# 启用分区包构建
-# =========================================================================
-ST_BOOTFS = "1"
-ST_VENDORFS = "1"
-ST_USERFS = "1"
 
 # =========================================================================
 # 跳过版本回退检查
@@ -79,6 +62,21 @@ STM32MP_SOURCE_SELECTION:pn-linux-stm32mp = "github"
 STM32MP_SOURCE_SELECTION:pn-optee-os-stm32mp = "github"
 STM32MP_SOURCE_SELECTION:pn-tf-a-stm32mp = "github"
 STM32MP_SOURCE_SELECTION:pn-u-boot-stm32mp = "github"
+
+IMAGE_INSTALL:append = " dropbear dpkg lrzsz kernel-modules fbset"
+
+TF_A_CONFIG[optee-emmc] = "\
+    ${STM32MP_DT_FILES_EMMC},\
+    ${TF_A_CONFIG_OPTS_optee} ${TF_A_CONFIG_OPTS_EXTDT} ${TF_A_CONFIG_OPTS_features} ${TF_A_CONFIG_OPTS_fwupdate} STM32MP_EMMC=1 STM32MP_EMMC_BOOT=1,\
+    ${TF_A_CONFIG_BASENAME_BIN},\
+    ${TF_A_CONFIG_MAKE_TARGET},\
+    ${TF_A_CONFIG_DEPLOY_FTYPE} ${TF_A_CONFIG_DEPLOY_EXTRA},\
+    ${EXTDT_SUFFIX_EMMC}"
+
+
+
+
+
 ```
 
 # 编译
