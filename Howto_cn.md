@@ -8,7 +8,7 @@ repo init -u https://github.com/stm32mp9527/oe-manifest.git \
           -b shuhe-dev \
           -m default.xml
 
-repo sync
+repo sync -j8
 ```
 
 # 创建 build 目录
@@ -117,3 +117,26 @@ bitbake shuhe-test-image-core
 所有定制文件已推送至 GitHub，无需任何手工复制。
 
 
+
+# 一键部署 skill(推荐)
+
+面向客户的零门槛部署方式,已随本仓库分发(`skill/` 目录):
+
+## 方式一:独立脚本(无需 opencode)
+
+```bash
+bash skill/shuhe-ostl-deploy/scripts/deploy.sh
+```
+
+自动完成:环境检查 → 安装依赖 → repo sync → 生成 build 目录 →
+写入 local.conf 定制 → bitbake shuhe-test-image-core → 产物验证。
+
+## 方式二:opencode skill(语音/文字触发)
+
+```bash
+# 1. 安装 opencode 后, 把 skill 链接到用户目录:
+ln -sf ~/shuhe-test/skill/shuhe-ostl-deploy ~/.config/opencode/skills/
+# 2. 对 opencode 说: "一键部署 shuhe 项目" 即可全流程执行
+```
+
+两者等效;首次构建均需下载约 13GB 源码,耗时 1~2 小时。
