@@ -196,10 +196,13 @@ verify() {
     echo "  bootfs: $(basename "$BOOTFS")"
     # bootfs 关键内容检查
     local missing=""
-    for f in uImage stm32mp135f-test.dtb extlinux st-image-resize-initrd; do
-        command -v debugfs >/dev/null 2>&1 && \
+    if command -v debugfs >/dev/null 2>&1; then
+        for f in uImage stm32mp135f-test.dtb extlinux st-image-resize-initrd; do
             debugfs -R "ls -p /" "$BOOTFS" 2>/dev/null | grep -q "/$f/" || missing="$missing $f"
-    done
+        done
+    else
+        warn "debugfs 未安装(e2fsprogs), 跳过 bootfs 内容校验"
+    fi
     [ -z "$missing" ] || die "bootfs 缺少启动文件:$missing(烧录会卡 U-Boot, 请重新构建并检查 shuhe-test-image-core.bb 的 IMAGE_INSTALL:append)"
     ok "bootfs 启动文件齐全(uImage/dtb/extlinux/initrd)"
 
