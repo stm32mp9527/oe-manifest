@@ -1,5 +1,5 @@
 # =========================================================================
-# shuhe-ostl-deploy: 自定义板 local.conf 模板(现状保留, 供 configure.sh 参考)
+# shuhe-ostl-deploy: 自定义板 local.conf 模板(纯配置,AI 将全文追加到 build-*/conf/local.conf 末尾)
 # 追加到 build-openstlinuxweston-stm32mp13-disco-test/conf/local.conf 末尾
 # =========================================================================
 

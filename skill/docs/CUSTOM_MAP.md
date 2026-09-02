@@ -13,7 +13,7 @@
 
 ---
 
-## 1. 网口(eth1/eth2)
+## 1. 网口(eth1/eth2 = MAC 硬件名;板上接口名是 end0/end1)
 
 | 项目 | 自定义板(-test) | 官方板(官方 dk) |
 |------|----------------|-----------------|
@@ -23,7 +23,7 @@
 | 驱动模块化 | `meta-st-stm32mp/recipes-kernel/linux/linux-stm32mp_%.bbappend`(`do_configure` 里 `scripts/config -m STMMAC_ETH ...`) | 同左(共用) |
 
 修改方法:换 PHY 时改 `phy-handle`/`phy-mode`/`reg`;换引脚改对应 `_pins_mx` 组。
-验证:`ip link`(eth0/eth1 UP)、`ethtool eth1`、`ping <对端>`。
+验证:`ip link`(end0/end1 LOWER_UP)、`ethtool end0`、`ping -I end0 <对端>`。
 
 ## 2. HDMI(SII9022 桥)
 
