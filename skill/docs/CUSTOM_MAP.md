@@ -2,7 +2,8 @@
 
 > 双板型对照:自定义板(`stm32mp13-disco-test`,256MB,eMMC,`-test` 设备树)与
 > 官方板(`stm32mp13-disco-dk`,512MB,SD 卡,官方 `stm32mp135f-dk` 设备树)。
-> 内核版本 6.6.129 / U-Boot 2023.10 / OP-TEE 4.0.0 / TF-A 2.10(ST r3.1 基线)。
+> 内核版本 6.6.129 / U-Boot 2023.10 / OP-TEE 4.0.0 / TF-A 2.10.24;四件套 recipe 均声明
+> ST r3.1(u-boot/tf-a 挂官方 r3.1 patch,linux/optee fork 代码含 r3.1 内容)。
 
 ## 约定
 

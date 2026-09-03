@@ -36,7 +36,11 @@ description: |
 - manifest:`github.com/stm32mp9527/oe-manifest`(branch `shuhe-dev`)
 - fork 全部在 `github.com/stm32mp9527/`(linux / u-boot / optee_os / arm-trusted-firmware /
   meta-st-stm32mp / meta-st-openstlinux)
-- ST 基线:openstlinux-6.6-yocto-scarthgap-mpu-v26.06.10;BSP 基于 ST r3.1
+- **版本基线(2026-09 实测校准)**:meta 层 fork 基线 `v25.06.11`(分支名
+  `shuhe-dev-v26.06.10` 为"向 v26.06.10 升级"的目标分支,与 `shuhe-dev` 同指向);
+  addons 层 `v26.06.10`;**BSP 四件套 recipe 全部声明 ST r3.1**(u-boot/tf-a 挂官方
+  r3.1 patch;linux/optee fork 代码含 r3.1 内容);组件版本:内核 6.6.129 /
+  U-Boot 2023.10 / OP-TEE 4.0.0 / TF-A 2.10.24
 
 ## 1.5 新电脑安装本手册(AI 自举:没装手册的机器上,先装再用)
 
@@ -62,6 +66,28 @@ mkdir -p ~/.config/opencode/skills && cp -r /tmp/om/skill ~/.config/opencode/ski
 - **硬约束**:bitbake 只能跑在 Linux(Ubuntu,≥100GB 磁盘)。agent 主机不是 Linux 时,
   让 agent ssh 到 Linux 构建机执行,手册流程不变
 - 装好后的开场白:**"一键部署"**(全新环境)/ "shuhe 部署" / "新板子适配"
+
+## 1.6 BSP 组件指向表(SRCREV 纪律)
+
+四个 BSP 组件由 meta 层 recipe 专门指向 fork 的 `shuhe-dev` 分支(你改源码后 push,
+**必须同步更新对应 SRCREV**,否则新机器构建的组件与本机不一致):
+
+| 组件 | meta 层指向文件 | 分支 | SRCREV 字段 |
+|------|----------------|------|------------|
+| linux | `meta-st-stm32mp/recipes-kernel/linux/linux-stm32mp_6.6.bb` | `shuhe-dev` | `SRCREV:class-devupstream` |
+| u-boot | `meta-st-stm32mp/recipes-bsp/u-boot/u-boot-stm32mp-common_2023.10.inc` | `shuhe-dev` | 同上 |
+| optee | `meta-st-stm32mp/recipes-security/optee/optee-os-stm32mp-common_4.0.0.inc` | `shuhe-dev` | 同上 |
+| tf-a | `meta-st-stm32mp/recipes-bsp/trusted-firmware-a/tf-a-stm32mp-common.inc` | `shuhe-dev` | 同上 |
+
+**更新纪律**(改完源码必走):
+
+1. 向 BSP fork 的 `shuhe-dev` push 新提交
+2. 取 fork tip 完整 SHA(`git ls-remote git@github.com:stm32mp9527/<repo>.git refs/heads/shuhe-dev`)
+3. 更新对应 recipe 的 `SRCREV:class-devupstream`,commit 后 push:
+   `git push ShuHeLinux HEAD:refs/heads/shuhe-dev`(本地分支为 `shuhe-dev-v26.06.10`,
+   与 `shuhe-dev` 同指向,推一个即可,或两分支同推)
+4. 新机器 `repo sync` 后即与本机一致;本机如有该组件 devtool workspace,内容同步后
+   `devtool reset <组件>` 回到 recipe 驱动
 
 ## 2. 全新环境部署(AI 按步执行,每步向用户汇报进度)
 
@@ -179,4 +205,4 @@ devtool modify tf-a-stm32mp
 - `docs/CUSTOM_MAP.md` —— 现有双板型外设修改点(行号级定位 + 验证命令)
 - `docs/HARDWARE_MAP.md` —— 硬件参数 → 修改点映射(板卡适配问答库)
 - `templates/local.conf.shuhe` / `local.conf.dk` / `machine-variant.tmpl` —— local.conf 内容源
-- 工程内回滚文档 —— 历史改动的原状与还原方式(每次改动必须更新)
+- `docs/ROLLBACK.md` —— 历史改动的原状与还原方式(铁律 #5,每次改动必须更新)
