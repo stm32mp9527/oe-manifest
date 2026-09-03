@@ -38,6 +38,31 @@ description: |
   meta-st-stm32mp / meta-st-openstlinux)
 - ST 基线:openstlinux-6.6-yocto-scarthgap-mpu-v26.06.10;BSP 基于 ST r3.1
 
+## 1.5 新电脑安装本手册(AI 自举:没装手册的机器上,先装再用)
+
+本手册随 manifest 仓库分发(`github.com/stm32mp9527/oe-manifest`,branch `shuhe-dev`,
+仓库内路径 `skill/`)。纯 markdown 知识库,agent 无关,任何新电脑**整个目录复制、内容零改动**:
+
+| agent | 安装目标目录 | 触发方式 |
+|-------|-------------|---------|
+| opencode | `~/.config/opencode/skills/shuhe-ostl-deploy/` | 触发词自动加载 |
+| OpenClaw(龙虾) | `~/.openclaw/skills/shuhe-ostl-deploy/`(全机共享)或 `~/.openclaw/workspace/skills/`(单 agent,优先级更高) | 触发词自动注入 |
+| 其他 agent(Crush/Claude Code 等) | 工作区任意位置,如 `~/shuhe-skill/` | 开局让 agent 读 `SKILL.md` 并遵守铁律 |
+
+标准安装命令(AI 代劳;https 失败换 ssh 协议或先配 SSH key):
+
+```bash
+git clone -b shuhe-dev --depth 1 https://github.com/stm32mp9527/oe-manifest.git /tmp/om
+mkdir -p ~/.config/opencode/skills && cp -r /tmp/om/skill ~/.config/opencode/skills/shuhe-ostl-deploy
+# OpenClaw:把 mkdir/cp 的目标换成 ~/.openclaw/skills/shuhe-ostl-deploy
+```
+
+- 装完自检:下一轮对话 agent 应能在 skill 清单中看到 `shuhe-ostl-deploy`
+  (`openclaw skills list`,或直接问 agent"你有哪些 skill")
+- **硬约束**:bitbake 只能跑在 Linux(Ubuntu,≥100GB 磁盘)。agent 主机不是 Linux 时,
+  让 agent ssh 到 Linux 构建机执行,手册流程不变
+- 装好后的开场白:**"一键部署"**(全新环境)/ "shuhe 部署" / "新板子适配"
+
 ## 2. 全新环境部署(AI 按步执行,每步向用户汇报进度)
 
 1. **环境检查**:`df -h`(≥100GB)、`lsb_release -a`(Ubuntu 20.04/22.04/24.04)、
