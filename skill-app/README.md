@@ -27,9 +27,9 @@ cp -r /tmp/om/skill-app ~/.config/opencode/skills/shuhe-ostl-app
 
 ## 触发词
 
-开发 app / 上层应用 / 网络通讯程序 / TCP / UDP / HTTP / MQTT /
-HDMI / LCD 显示 / 图像程序 / 开机自启动 / 第三方开发 / 不碰底层 /
-app recipe / bitbake app
+开发 app / 上层应用 / 电池管理 / 电机 / 传感器 / 数据采集 / Modbus / CAN /
+网络通讯程序 / TCP / UDP / HTTP / MQTT / HDMI / LCD 显示 / 图像程序 /
+开机自启动 / 第三方开发 / 不碰底层 / app recipe / bitbake app
 
 ## 完整手册在哪
 

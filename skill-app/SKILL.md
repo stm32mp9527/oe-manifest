@@ -2,9 +2,11 @@
 name: shuhe-ostl-app
 description: |
   STM32MP1 OpenSTLinux 上层应用开发入口（type 2 客户：不改 kernel/uboot/dts，
-  只开发 app）。是 shuhe-ostl-deploy 的 companion。
-  触发词：开发 app、上层应用、网络通讯程序、TCP/UDP/HTTP/MQTT、HDMI/LCD 显示、
-  图像程序、开机自启动、第三方开发、不碰底层、app recipe、bitbake app。
+  只开发 app；任意领域：电池/电机/传感器/数据采集/工业协议/网络/显示）。
+  是 shuhe-ostl-deploy 的 companion。
+  触发词：开发 app、上层应用、电池管理、电机、传感器、数据采集、Modbus、CAN、
+  网络通讯程序、TCP/UDP/HTTP/MQTT、HDMI/LCD 显示、图像程序、开机自启动、
+  第三方开发、不碰底层、app recipe、bitbake app。
 ---
 
 # shuhe-ostl-app — 入口 stub（完整手册随 repo sync 分发）
